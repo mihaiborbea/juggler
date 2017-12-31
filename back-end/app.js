@@ -1,6 +1,6 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
+var favicon = require('serve-favicon'); // eslint-disable-line
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -12,18 +12,32 @@ var app = express();
 
 var bluebird = require('bluebird');
 var mongoose = require('mongoose');
-mongoose.Promise = bluebird
+mongoose.Promise = bluebird;
 
 // db connection
-mongoose.connect('mongodb://127.0.0.1:27017/todoapp', { useMongoClient: true})
-.then(()=> { console.log(`Succesfully Connected to the Mongodb Database  at URL : mongodb://127.0.0.1:27017/todoapp`)})
-.catch(()=> { console.log(`Error Connecting to the Mongodb Database at URL : mongodb://127.0.0.1:27017/todoapp`)})
+mongoose
+  .connect('mongodb://127.0.0.1:27017/todoapp', {
+    useMongoClient: true
+  })
+  .then(() => {
+    console.log(
+      `Succesfully Connected to the Mongodb Database  at URL : mongodb://127.0.0.1:27017/todoapp`
+    );
+  })
+  .catch(() => {
+    console.log(
+      `Error Connecting to the Mongodb Database at URL : mongodb://127.0.0.1:27017/todoapp`
+    );
+  });
 
 // CORS
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   next();
 });
 
@@ -32,10 +46,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
