@@ -1,7 +1,4 @@
-var ToDo = require('../models/todo.model');
-
-// Saving the context of this module inside the _the variable
-_this = this;
+var ToDoModel = require('../models/todo.model');
 
 // Async function to get the To do List
 exports.getTodos = async function(query, page, limit) {
@@ -12,7 +9,7 @@ exports.getTodos = async function(query, page, limit) {
   };
 
   try {
-    var todos = await ToDo.paginate(query, options);
+    var todos = await ToDoModel.paginate(query, options);
     return todos;
   } catch (e) {
     throw Error('Error while Paginating Todos');
@@ -20,7 +17,7 @@ exports.getTodos = async function(query, page, limit) {
 };
 
 exports.createTodo = async function(todo) {
-  var newTodo = new ToDo({
+  var newTodo = new ToDoModel({
     title: todo.title,
     description: todo.description,
     date: new Date(),
@@ -39,7 +36,7 @@ exports.updateTodo = async function(todo) {
   var id = todo.id;
 
   try {
-    var oldTodo = await ToDo.findById(id);
+    var oldTodo = await ToDoModel.findById(id);
   } catch (e) {
     throw Error('Error occured while Finding the Todo');
   }
@@ -63,7 +60,7 @@ exports.updateTodo = async function(todo) {
 
 exports.deleteTodo = async function(id) {
   try {
-    var deleted = await ToDo.remove({
+    var deleted = await ToDoModel.remove({
       _id: id
     });
     if (deleted.result.n === 0) {
