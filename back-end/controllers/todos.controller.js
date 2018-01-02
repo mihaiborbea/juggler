@@ -35,19 +35,21 @@ exports.createTodo = async function(req, res, next) {
     status: req.body.status
   };
 
+  console.log(req.body.status);
+
   try {
     // Calling the Service function with the new object from the Request Body
     var createdTodo = await TodoService.createTodo(todo);
-    return res.status(201).json({
+    await console.log('here');
+    return res.status(200).json({
       status: 201,
       data: createdTodo,
       message: 'Created ToDo Succesfully'
     });
   } catch (e) {
-    // Return an Error Response Message with Code and the Error Message.
     return res.status(400).json({
       status: 400,
-      message: 'Todo Creation was Unsuccesfull'
+      message: e.message
     });
   }
 };
