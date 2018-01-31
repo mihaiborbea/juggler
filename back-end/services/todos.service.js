@@ -1,13 +1,6 @@
 var ToDoModel = require('../models/todo.model');
 
-// Async function to get the To do List
-exports.getTodos = async function(query, page, limit) {
-  // Options setup for the mongoose paginate
-  var options = {
-    page,
-    limit
-  };
-
+exports.getTodos = async function (query, options) {
   try {
     var todos = await ToDoModel.paginate(query, options);
     return todos;
@@ -16,12 +9,13 @@ exports.getTodos = async function(query, page, limit) {
   }
 };
 
-exports.createTodo = async function(todo) {
+exports.createTodo = async function (todo) {
   var newTodo = new ToDoModel({
     title: todo.title,
     description: todo.description,
     date: new Date(),
-    status: todo.status
+    status: todo.status,
+    author: todo.author
   });
 
   try {
@@ -32,20 +26,19 @@ exports.createTodo = async function(todo) {
   }
 };
 
-exports.updateTodo = async function(todo) {
+exports.updateTodo = async function (todo) {
   var id = todo.id;
 
   try {
     var oldTodo = await ToDoModel.findById(id);
   } catch (e) {
-    throw Error('Error occured while Finding the Todo');
+    throw Error('Todo could not be found');
   }
 
   if (!oldTodo) {
     return false;
   }
 
-  // Edit the Todo Object
   oldTodo.title = todo.title;
   oldTodo.description = todo.description;
   oldTodo.status = todo.status;
@@ -54,19 +47,20 @@ exports.updateTodo = async function(todo) {
     var savedTodo = await oldTodo.save();
     return savedTodo;
   } catch (e) {
-    throw Error('And Error occured while updating the Todo');
+    throw Error('An Error occured while updating the Todo');
   }
 };
 
-exports.deleteTodo = async function(id) {
+exports.deleteTodo = async function (id) {
   try {
     var deleted = await ToDoModel.remove({
       _id: id
     });
+    console.log('HERE', deleted)
     if (deleted.result.n === 0) {
       throw Error('Todo Could not be deleted');
     }
-    return deleted;
+    return deleted.result.n;
   } catch (e) {
     throw Error('Error Occured while Deleting the Todo');
   }

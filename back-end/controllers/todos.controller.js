@@ -1,60 +1,64 @@
-var TodoService = require('../services/todos.service');
+const TodoService = require('../services/todos.service');
+const User = require('../models/user.model');
 
-// Async Controller function to get the To do List
-
-exports.getTodos = async function(req, res, next) {
-  // Check the existence of the query parameters, If the exists doesn't exists assign a default value
-
-  var page = req.query.page ? req.query.page : 1;
-  var limit = req.query.limit ? req.query.limit : 10;
-
+exports.getTodos = async function (req, res, next) {
+  const options = {
+    page: req.query.page ? req.query.page : 1,
+    limit: req.query.limit ? req.query.limit : 10,
+    populate: req.query.include
+  }
   try {
-    var todos = await TodoService.getTodos({}, page, limit);
-
-    // Return the todos list with the appropriate HTTP Status Code and Message.
-
-    return res.status(200).json({
-      status: 200,
-      data: todos,
-      message: 'Todos Recieved Successfully'
-    });
+    const user = await User.findById(req.params.userId);
+    try {
+      var todos = await TodoService.getTodos({ author: req.params.userId }, options);
+      return res.status(200).json({
+        status: 200,
+        result: todos,
+        message: 'Todos Recieved Successfully'
+      });
+    } catch (e) {
+      return res.status(400).json({
+        status: 400,
+        message: e.message
+      });
+    }
   } catch (e) {
-    // Return an Error Response Message with Code and the Error Message.
-    return res.status(400).json({
-      status: 400,
-      message: e.message
+    return res.status(500).json({
+      message: 'Invalid User'
     });
   }
 };
 
-exports.createTodo = async function(req, res, next) {
-  // Req.Body contains the form submit values.
-  var todo = {
-    title: req.body.title,
-    description: req.body.description,
-    status: req.body.status
-  };
-
-  console.log(req.body.status);
-
+exports.createTodo = async function (req, res, next) {
   try {
-    // Calling the Service function with the new object from the Request Body
-    var createdTodo = await TodoService.createTodo(todo);
-    await console.log('here');
-    return res.status(200).json({
-      status: 201,
-      data: createdTodo,
-      message: 'Created ToDo Succesfully'
-    });
+    const user = await User.findById(req.params.userId);
+    var todo = {
+      title: req.body.title,
+      description: req.body.description,
+      status: req.body.status,
+      author: req.params.userId
+    };
+    try {
+      var createdTodo = await TodoService.createTodo(todo);
+      return res.status(200).json({
+        status: 201,
+        result: createdTodo,
+        message: 'Created ToDo Succesfully'
+      });
+    } catch (e) {
+      return res.status(400).json({
+        status: 400,
+        message: e.message
+      });
+    }
   } catch (e) {
-    return res.status(400).json({
-      status: 400,
-      message: e.message
+    return res.status(500).json({
+      message: 'Invalid User'
     });
   }
 };
 
-exports.updateTodo = async function(req, res, next) {
+exports.updateTodo = async function (req, res, next) {
   // Id is necessary for the update
   if (!req.body._id) {
     return res.status(400).json({
@@ -76,7 +80,7 @@ exports.updateTodo = async function(req, res, next) {
     var updatedTodo = await TodoService.updateTodo(todo);
     return res.status(200).json({
       status: 200,
-      data: updatedTodo,
+      result: updatedTodo,
       message: 'Updated Todo Succesfully'
     });
   } catch (e) {
@@ -87,11 +91,11 @@ exports.updateTodo = async function(req, res, next) {
   }
 };
 
-exports.removeTodo = async function(req, res, next) {
+exports.removeTodo = async function (req, res, next) {
   var id = req.params.id;
 
   try {
-    var deleted = await TodoService.deleteTodo(id);
+    await TodoService.deleteTodo(id);
     return res.status(204).json({
       status: 204,
       message: 'Succesfully Todo Deleted'

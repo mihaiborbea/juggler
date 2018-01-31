@@ -2,10 +2,21 @@ var mongoose = require('mongoose');
 var mongoosePaginate = require('mongoose-paginate');
 
 var ToDoSchema = new mongoose.Schema({
-  title: String,
+  title: {
+    type: String,
+    required: true
+  },
   description: String,
   date: Date,
-  status: String
+  status: {
+    type: String,
+    default: 'pending'
+  },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
 });
 
 ToDoSchema.plugin(mongoosePaginate);
