@@ -6,7 +6,7 @@ const UsersService = require('../services/users.service');
 
 exports.register = async function (req, res, next) {
   try {
-    const testEmail = await UserModel.findOne({ email: req.body.email });
+    const testEmail = await UsersService.getUserByEmail(req.body.email);
     if (testEmail) {
       return res.status(409).json({
         status: 409,
@@ -43,7 +43,7 @@ exports.register = async function (req, res, next) {
 
 exports.login = async function (req, res, next) {
   try {
-    const user = await UserModel.findOne({ email: req.body.email });
+    const user = await UsersService.getUserByEmail(req.body.email);
     if (!user) {
       return res.status(401).json({
         message: 'Auth failed'

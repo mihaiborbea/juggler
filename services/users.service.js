@@ -15,3 +15,12 @@ exports.createUser = async function (user) {
     throw Error('Error while Creating User');
   }
 };
+
+exports.getUserById = async function (id, callback) {
+  return UserModel.findById(id, callback);
+};
+
+exports.getUserByEmail = async function (email, callback) {
+  const query = { email: email };
+  return UserModel.findOne(query, callback);
+};
