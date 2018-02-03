@@ -24,46 +24,46 @@ export class AppComponent implements OnInit {
       .subscribe((todos) => {
         this.todosList = todos;
         console.log(todos);
-      })
+      });
   }
 
   create() {
     this.todoService.createTodo(this.newTodo)
       .subscribe((res) => {
-        this.todosList.push(res.data)
-        this.newTodo = new TodoModel()
-      })
+        this.todosList.push(res.data);
+        this.newTodo = new TodoModel();
+      });
   }
 
   editTodo(todo: TodoModel) {
-    console.log(todo)
+    console.log(todo);
     if (this.todosList.includes(todo)) {
       if (!this.editTodos.includes(todo)) {
         this.editTodos.push(todo);
       } else {
         this.editTodos.splice(this.editTodos.indexOf(todo), 1);
         this.todoService.editTodo(todo).subscribe(res => {
-          console.log('Update Succesful')
+          console.log('Update Succesful');
         }, err => {
           this.editTodo(todo);
-          console.error('Update Unsuccesful')
-        })
+          console.error('Update Unsuccesful');
+        });
       }
     }
   }
 
   doneTodo(todo: TodoModel) {
-    todo.status = 'Done'
+    todo.status = 'Done';
     this.todoService.editTodo(todo).subscribe(res => {
-      console.log('Update Succesful')
+      console.log('Update Succesful');
     }, err => {
       this.editTodo(todo);
-      console.error('Update Unsuccesful')
-    })
+      console.error('Update Unsuccesful');
+    });
   }
 
   submitTodo(event, todo: TodoModel) {
-    if (event.keyCode == 13) {
+    if (event.keyCode === 13) {
       this.editTodo(todo);
     }
   }
@@ -71,6 +71,6 @@ export class AppComponent implements OnInit {
   deleteTodo(todo: TodoModel) {
     this.todoService.deleteTodo(todo._id).subscribe(res => {
       this.todosList.splice(this.todosList.indexOf(todo), 1);
-    })
+    });
   }
 }
