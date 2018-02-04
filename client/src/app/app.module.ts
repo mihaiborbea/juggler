@@ -3,6 +3,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TodoService } from './services/todo.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
@@ -11,6 +12,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { TodosComponent } from './components/todos/todos.component';
+import { ROUTES } from './app.routes';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { TodosComponent } from './components/todos/todos.component';
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    RouterModule.forRoot(ROUTES)
   ],
   providers: [
     TodoService
