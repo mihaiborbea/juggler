@@ -61,14 +61,14 @@ exports.createTodo = async function (req, res, next) {
 
 exports.updateTodo = async function (req, res, next) {
   // Id is necessary for the update
-  if (!req.body._id) {
+  if (!req.params.id) {
     return res.status(400).json({
       status: 400,
       message: 'Id must be present'
     });
   }
 
-  var id = req.body._id;
+  var id = req.params.id;
 
   var todo = {
     id,

@@ -51,8 +51,18 @@ export class TodoService {
   }
 
   editTodo(todo: TodoModel) {
-    const editUrl = `${this.todoUrl}`;
-    return this.http.put(editUrl, todo);
+    this.authService.loadUserData();
+    const endPoint = this.todoUrl + '/' + todo._id;
+    const token = this.authService.authToken;
+    const userId = this.authService.user._id;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'UserId': userId
+      })
+    };
+    return this.http.put(endPoint, todo, httpOptions);
   }
 
   deleteTodo(id: string): any {
