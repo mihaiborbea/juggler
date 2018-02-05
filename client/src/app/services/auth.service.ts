@@ -3,10 +3,10 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Response } from '@angular/http';
 import { Injectable } from '@angular/core';
-
 import 'rxjs/add/operator/map';
 import { catchError } from 'rxjs/operators/catchError';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { tokenNotExpired } from 'angular2-jwt';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +17,10 @@ export class AuthService {
   constructor(
     private http: HttpClient
   ) { }
+
+  public loggedIn(): boolean {
+    return tokenNotExpired('id_token');
+  }
 
   public register(user: UserModel): Observable<any> {
     const httpOptions = {

@@ -16,6 +16,7 @@ import { ValidateService } from './services/validate.service';
 import { ROUTES } from './app.routes';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { AuthService } from './services/auth.service';
+import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AuthService } from './services/auth.service';
   providers: [
     TodoService,
     ValidateService,
-    AuthService
+    AuthService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })
