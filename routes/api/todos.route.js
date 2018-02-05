@@ -10,8 +10,8 @@ router.get('/', authGuard, ToDoController.getTodos);
 
 router.post('/', authGuard, ToDoController.createTodo);
 
-router.put('/:todoId', authGuard, ToDoController.updateTodo);
+router.put('/:id', authGuard, ToDoController.updateTodo);
 
-router.delete('/:todoId', authGuard, ToDoController.removeTodo);
+router.delete('/:id', authGuard, ToDoController.removeTodo);
 
 module.exports = router;

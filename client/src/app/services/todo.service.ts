@@ -56,8 +56,18 @@ export class TodoService {
   }
 
   deleteTodo(id: string): any {
-    const deleteUrl = `${this.todoUrl}/${id}`;
-    return this.http.delete(deleteUrl)
+    this.authService.loadUserData();
+    const endPoint = this.todoUrl + '/' + id;
+    const token = this.authService.authToken;
+    const userId = this.authService.user._id;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'UserId': userId
+      })
+    };
+    return this.http.delete(endPoint, httpOptions)
       .map(res => {
         return res;
       });
