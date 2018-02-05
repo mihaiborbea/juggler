@@ -40,8 +40,22 @@ export class AuthService {
       .pipe(catchError(this.handleError));
   }
 
-  public storeUserData(token): void {
+  public storeUserData(token, user): void {
     localStorage.setItem('id_token', token);
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    this.authToken = token;
+    this.user = new UserModel(
+      user._id,
+      user.firstName,
+      user.lastName,
+      user.email
+    );
+  }
+
+  public logout(): void {
+    this.authToken = null;
+    this.user = null;
+    localStorage.clear();
   }
 
   // Basic error handling: to be improved later
