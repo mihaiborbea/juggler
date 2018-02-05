@@ -1,8 +1,9 @@
 import { TodoModel } from '../models/todo.model';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Response } from '@angular/http';
 import { Injectable } from '@angular/core';
+import { AuthService } from './auth.service';
 
 import 'rxjs/add/operator/map';
 
@@ -13,16 +14,37 @@ export class TodoService {
   todoUrl = `${this.api_url}/api/todos`;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) { }
 
 
   createTodo(todo: TodoModel): Observable<any> {
-    return this.http.post(`${this.todoUrl}`, todo);
+    this.authService.loadUserData();
+    const token = this.authService.authToken;
+    const userId = this.authService.user._id;
+    const endPoint = this.todoUrl + '/' + userId;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      })
+    };
+    return this.http.post(endPoint, todo, httpOptions);
   }
 
   getTodos(): Observable<TodoModel[]> {
-    return this.http.get(this.todoUrl)
+    this.authService.loadUserData();
+    const token = this.authService.authToken;
+    const userId = this.authService.user._id;
+    const endPoint = this.todoUrl + '/' + userId;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      })
+    };
+    return this.http.get(endPoint, httpOptions)
       .map(res => {
         return res['result'].docs as TodoModel[];
       });

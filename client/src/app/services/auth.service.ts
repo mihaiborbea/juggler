@@ -52,6 +52,17 @@ export class AuthService {
     );
   }
 
+  public loadUserData(): any {
+    this.authToken = localStorage.getItem('id_token');
+    const tempUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.user = new UserModel(
+      tempUser._id,
+      tempUser.firstName,
+      tempUser.lastName,
+      tempUser.email,
+    );
+  }
+
   public logout(): void {
     this.authToken = null;
     this.user = null;
