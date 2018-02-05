@@ -1,6 +1,5 @@
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { TodoService } from './services/todo.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -12,7 +11,11 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { TodosComponent } from './components/todos/todos.component';
+import { TodoService } from './services/todo.service';
+import { ValidateService } from './services/validate.service';
 import { ROUTES } from './app.routes';
+import { FlashMessagesModule } from 'angular2-flash-messages';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -27,10 +30,13 @@ import { ROUTES } from './app.routes';
     HttpClientModule,
     FormsModule,
     NgbModule.forRoot(),
-    RouterModule.forRoot(ROUTES)
+    RouterModule.forRoot(ROUTES),
+    FlashMessagesModule.forRoot()
   ],
   providers: [
-    TodoService
+    TodoService,
+    ValidateService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

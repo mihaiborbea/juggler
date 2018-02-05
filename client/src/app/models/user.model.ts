@@ -5,11 +5,16 @@ export class UserModel {
   public email: string;
   public password: string;
 
-  constructor() {
-    this.firstName = '';
-    this.lastName = '';
-    this.email = '';
-    this.password = '';
+  constructor(
+    firstName?: string,
+    lastName?: string,
+    email?: string,
+    password?: string
+  ) {
+    this.firstName = firstName || '';
+    this.lastName = lastName || '';
+    this.email = email || '';
+    this.password = password || '';
   }
-
+  
 }

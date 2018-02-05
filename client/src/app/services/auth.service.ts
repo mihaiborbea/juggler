@@ -1,0 +1,63 @@
+import { UserModel } from '../models/user.model';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Response } from '@angular/http';
+import { Injectable } from '@angular/core';
+
+import 'rxjs/add/operator/map';
+import { catchError } from 'rxjs/operators/catchError';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+
+@Injectable()
+export class AuthService {
+
+  public authToken: string;
+  public user: UserModel;
+
+  constructor(
+    private http: HttpClient
+  ) { }
+
+  public register(user: UserModel): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return this.http.post('http://localhost:3000/users/register', user, httpOptions)
+      .map((res) => res)
+      .pipe(catchError(this.handleError));
+  }
+
+  public login(userData): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return this.http.post('http://localhost:3000/users/login', userData, httpOptions)
+      .map((res) => res)
+      .pipe(catchError(this.handleError));
+  }
+
+  public storeUserData(token): void {
+    localStorage.setItem('id_token', token);
+  }
+
+  // Basic error handling: to be improved later
+  public handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    // return an ErrorObservable with a user-facing error message
+    return new ErrorObservable(
+      'Invalid Input');
+  }
+}

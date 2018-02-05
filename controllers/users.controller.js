@@ -46,11 +46,18 @@ exports.login = async function (req, res, next) {
     const user = await UsersService.getUserByEmail(req.body.email);
     if (!user) {
       return res.status(401).json({
+        status: 401,
         message: 'Auth failed'
       });
     }
-    await bcrypt.compare(req.body.password, user.password);
-    const token = await jwt.sign(
+    const matches = await bcrypt.compare(req.body.password, user.password);
+    if (!matches) {
+      return res.status(401).json({
+        status: 401,
+        message: 'Auth failed'
+      });
+    }
+    const token = jwt.sign(
       {
         email: user.email,
         firstName: user.firstName,
@@ -63,11 +70,13 @@ exports.login = async function (req, res, next) {
       }
     );
     return res.status(200).json({
+      status: 200,
       message: "Auth successful",
       token: token
     })
   } catch (err) {
     return res.status(404).json({
+      status: 401,
       message: "Auth failed"
     });
   }
