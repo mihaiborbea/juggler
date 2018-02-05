@@ -23,28 +23,28 @@ export class TodoService {
     this.authService.loadUserData();
     const token = this.authService.authToken;
     const userId = this.authService.user._id;
-    const endPoint = this.todoUrl + '/' + userId;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + token,
+        'UserId': userId
       })
     };
-    return this.http.post(endPoint, todo, httpOptions);
+    return this.http.post(this.todoUrl, todo, httpOptions);
   }
 
   getTodos(): Observable<TodoModel[]> {
     this.authService.loadUserData();
     const token = this.authService.authToken;
     const userId = this.authService.user._id;
-    const endPoint = this.todoUrl + '/' + userId;
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
+        'Authorization': 'Bearer ' + token,
+        'UserId': userId
       })
     };
-    return this.http.get(endPoint, httpOptions)
+    return this.http.get(this.todoUrl, httpOptions)
       .map(res => {
         return res['result'].docs as TodoModel[];
       });

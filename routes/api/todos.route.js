@@ -6,12 +6,12 @@ var authGuard = require('../../middlewares/auth.guard');
 
 // Map each API to the Controller FUnctions
 
-router.get('/:userId', authGuard, ToDoController.getTodos);
+router.get('/', authGuard, ToDoController.getTodos);
 
-router.post('/:userId', authGuard, ToDoController.createTodo);
+router.post('/', authGuard, ToDoController.createTodo);
 
-router.put('/', authGuard, ToDoController.updateTodo);
+router.put('/:todoId', authGuard, ToDoController.updateTodo);
 
-router.delete('/:id', authGuard, ToDoController.removeTodo);
+router.delete('/:todoId', authGuard, ToDoController.removeTodo);
 
 module.exports = router;

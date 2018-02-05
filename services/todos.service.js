@@ -17,7 +17,7 @@ exports.createTodo = async function (todo) {
     status: todo.status,
     author: todo.author
   });
-
+  console.log(newTodo);
   try {
     var savedTodo = await newTodo.save();
     return savedTodo;

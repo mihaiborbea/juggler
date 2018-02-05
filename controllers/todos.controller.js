@@ -8,9 +8,9 @@ exports.getTodos = async function (req, res, next) {
     populate: req.query.include
   }
   try {
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(req.headers.userid);
     try {
-      var todos = await TodoService.getTodos({ author: req.params.userId }, options);
+      var todos = await TodoService.getTodos({ author: req.headers.userid }, options);
       return res.status(200).json({
         status: 200,
         result: todos,
@@ -31,13 +31,14 @@ exports.getTodos = async function (req, res, next) {
 
 exports.createTodo = async function (req, res, next) {
   try {
-    const user = await User.findById(req.params.userId);
+    const user = await User.findById(req.headers.userid);
     var todo = {
       title: req.body.title,
       description: req.body.description,
       status: req.body.status,
-      author: req.params.userId
+      author: req.headers.userid
     };
+    console.log(req.headers)
     try {
       var createdTodo = await TodoService.createTodo(todo);
       return res.status(200).json({
