@@ -29,6 +29,7 @@ export class RegisterComponent implements OnInit {
 
   public onRegisterSubmit(): void {
     const user: UserModel = new UserModel(
+      undefined,
       this.firstName,
       this.lastName,
       this.email,

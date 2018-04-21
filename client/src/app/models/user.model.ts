@@ -12,8 +12,8 @@ export class UserModel {
     email?: string,
     password?: string
   ) {
-    this._id = id || '',
-      this.firstName = firstName || '';
+    this._id = id || '';
+    this.firstName = firstName || '';
     this.lastName = lastName || '';
     this.email = email || '';
     this.password = password || '';
