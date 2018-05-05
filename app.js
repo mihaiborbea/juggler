@@ -1,5 +1,3 @@
-
-const dotenv = require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -17,24 +15,21 @@ const app = express();
 // DB connection
 mongoose.Promise = bluebird;
 mongoose
-  .connect(config.database, {
-    useMongoClient: true
-  })
+  .connect(config.database)
   .then(() => {
-    console.log(
-      `Succesfully Connected to the Mongodb Database at ${config.database}`
-    );
+    console.log(`Succesfully Connected to the Mongodb Database at ${config.database}`);
   })
-  .catch((err) => {
-    console.log(
-      `Error Connecting to the Mongodb.\nERROR: ${err}`
-    );
+  .catch(err => {
+    console.log(`Error Connecting to the Mongodb.\nERROR: ${err}`);
   });
 
 // CORS
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, UserId');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization, UserId'
+  );
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   next();
 });
