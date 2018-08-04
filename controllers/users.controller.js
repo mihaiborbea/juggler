@@ -79,6 +79,7 @@ exports.login = async function (req, res, next) {
       token: token
     })
   } catch (err) {
+    console.error(err);
     return res.status(404).json({
       status: 401,
       message: "Auth failed"

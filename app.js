@@ -5,12 +5,14 @@ const bodyParser = require('body-parser');
 const bluebird = require('bluebird');
 const mongoose = require('mongoose');
 const config = require('./config/database');
+const dotenv = require('dotenv');
 
 const index = require('./routes/index.route');
 const users = require('./routes/users.route');
 const api = require('./routes/api.route');
 
 const app = express();
+dotenv.config();
 
 // DB connection
 mongoose.Promise = bluebird;

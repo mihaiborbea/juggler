@@ -53,15 +53,16 @@ exports.updateTodo = async function (todo) {
 
 exports.deleteTodo = async function (id) {
   try {
-    var deleted = await ToDoModel.remove({
+    var deleted = await ToDoModel.deleteOne({
       _id: id
     });
     console.log('HERE', deleted)
-    if (deleted.result.n === 0) {
+    if (deleted.n === 0) {
       throw Error('Todo Could not be deleted');
     }
-    return deleted.result.n;
+    return deleted.n;
   } catch (e) {
+    console.error(e);
     throw Error('Error Occured while Deleting the Todo');
   }
 };

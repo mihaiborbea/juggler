@@ -46,7 +46,7 @@ export class AuthService {
 
   public storeUserData(token, user): void {
     localStorage.setItem('id_token', token);
-    localStorage.setItem('currentUser', JSON.stringify(user));
+    localStorage.setItem('signed_user', JSON.stringify(user));
     this.authToken = token;
     this.user = new UserModel(
       user._id,
