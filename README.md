@@ -1,7 +1,6 @@
 # juggler
 
-## A simple MEAN app
+## A simple MEAN app (Mongo + Express + Angular + Node)
 
-### Made for learning purposes
-
-A clear example combining all these technologies, with a clean architecture.
+A clear example combining all these technologies, with a clean architecture.<br>
+<b>Being done as university project this app is not a complete solution. It is posted here as a backup and has no active development.</b>
